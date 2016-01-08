@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd    
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd 
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+
+    <!-- 加载配置文件 -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:config/config.properties</value>
+            </list>
+        </property>
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+    </bean>
+    <!-- 支持异步方法执行 -->
+    <task:annotation-driven />
+    <!--默认的mvc注解映射的支持 -->
+    <mvc:annotation-driven/>
+
+    <context:annotation-config />
+    <context:component-scan base-package="com.trident.code" />
+
+    <!-- 视图解析器和json解析器 -->
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="defaultViews">
+            <list>
+                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+                    <property name="jsonpParameterNames">
+                        <set>
+                            <value>jsonp</value>
+                            <value>callback</value>
+                        </set>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <!--<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">-->
+        <!--<property name="resourceLoaderPath" value="/WEB-INF/templates" />-->
+        <!--<property name="configLocation" value="classpath:config/velocity.properties" />-->
+    <!--</bean>-->
+
+    <!-- 配置视图的显示 -->
+    <!--<bean id="ViewResolver" class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">-->
+        <!--<property name="prefix" value="/" />&lt;!&ndash; 视图文件的前缀，即存放的路径 &ndash;&gt;-->
+        <!--<property name="suffix" value=".vm" />&lt;!&ndash; 视图文件的后缀名 &ndash;&gt;-->
+        <!--<property name="toolboxConfigLocation" value="/WEB-INF/tools.xml" />&lt;!&ndash;toolbox配置文件路径 &ndash;&gt;-->
+        <!--<property name="dateToolAttribute" value="date" />&lt;!&ndash;日期函数名称 &ndash;&gt;-->
+        <!--<property name="numberToolAttribute" value="number" />&lt;!&ndash;数字函数名称 &ndash;&gt;-->
+        <!--<property name="contentType" value="text/html;charset=UTF-8" />-->
+        <!--<property name="exposeSpringMacroHelpers" value="true" />&lt;!&ndash;是否使用spring对宏定义的支持 &ndash;&gt;-->
+        <!--<property name="exposeRequestAttributes" value="true" />&lt;!&ndash;是否开放request属性 &ndash;&gt;-->
+        <!--<property name="requestContextAttribute" value="rc" />&lt;!&ndash;request属性引用名称 &ndash;&gt;-->
+        <!--<property name="layoutUrl" value="layout/layout-page.vm" />&lt;!&ndash;指定layout文件 &ndash;&gt;-->
+        <!--<property name="viewClass" value="org.springframework.web.servlet.view.velocity.VelocityLayoutView" />-->
+    <!--</bean>-->
+    <!-- 对静态资源文件的访问 -->
+    <mvc:default-servlet-handler />
+</beans>
